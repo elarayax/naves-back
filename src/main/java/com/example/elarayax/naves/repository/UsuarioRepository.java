@@ -8,4 +8,5 @@ import com.example.elarayax.naves.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
+    Usuario findByCorreo(String correo);
 }

@@ -3,6 +3,7 @@ package com.example.elarayax.naves.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.elarayax.naves.service.UsuarioService;
+
+
 import com.example.elarayax.naves.model.Usuario;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -34,6 +36,18 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+        Usuario login = usuarioService.login(usuario);
+        
+        if (login != null) {
+            login.setContrasena(null);
+            return ResponseEntity.ok(login);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Integer id) {
         Usuario usuario = usuarioService.findById(id);
@@ -45,7 +59,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario createdUsuario = usuarioService.save(usuario);
+        Usuario createdUsuario = usuarioService.updateUsuario(usuario);
         return ResponseEntity.status(201).body(createdUsuario);
     }
 

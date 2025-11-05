@@ -3,6 +3,7 @@ package com.example.elarayax.naves.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.elarayax.naves.model.Usuario;
@@ -18,16 +19,40 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; 
+
     public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        usuarios.forEach(u -> u.setContrasena(null));
+        return usuarios;
     }
 
-    
     public Usuario findById(Integer id) {
-        return usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            usuario.setContrasena(null);
+        }
+        return usuario;
+    }
+
+    public Usuario login(Usuario usuario) {
+        Usuario foundUsuario = usuarioRepository.findByCorreo(usuario.getCorreo());
+ 
+        if (foundUsuario != null &&  passwordEncoder.matches(usuario.getContrasena(), foundUsuario.getContrasena())) {
+            return foundUsuario;
+        }
+
+        return null;
+    }
+
+    public Usuario updateUsuario(Usuario usuario) {
+        return save(usuario);
     }
 
     public Usuario save(Usuario usuario) {
+        String passwordHasheada = passwordEncoder.encode(usuario.getContrasena());
+        usuario.setContrasena(passwordHasheada);
         return usuarioRepository.save(usuario);
     }
 
@@ -38,11 +63,11 @@ public class UsuarioService {
                 existingUsuario.setNombre(usuario.getNombre());
             }
             if (usuario.getCorreo() != null) {
-                existingUsuario.setCorreo(usuario.getContrasena());
+                existingUsuario.setCorreo(usuario.getCorreo());
             }
 
             if(usuario.getContrasena() != null) {
-                existingUsuario.setContrasena(usuario.getContrasena());
+                existingUsuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
             }
 
             if(usuario.getRol() != null) {
