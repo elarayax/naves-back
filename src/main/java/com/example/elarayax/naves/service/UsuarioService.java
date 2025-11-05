@@ -22,9 +22,11 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder; 
 
+    @Autowired
+    private NaveService naveService;
+
     public List<Usuario> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        usuarios.forEach(u -> u.setContrasena(null));
         return usuarios;
     }
 
@@ -80,6 +82,7 @@ public class UsuarioService {
     }
 
     public void deleteById(Integer id) {
+        naveService.deleteByUsuarioId(id);
         usuarioRepository.deleteById(id);
     }
 }

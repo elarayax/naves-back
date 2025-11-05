@@ -18,6 +18,9 @@ public class FaccionesService {
     @Autowired
     private FaccionRepository faccionRepository;
 
+    @Autowired
+    private NaveService naveService;
+
     public List<Faccion> findAll() {
         return faccionRepository.findAll();
     }
@@ -52,6 +55,7 @@ public class FaccionesService {
     }
 
     public void deleteById(Integer id) {
+        naveService.deleteByFaccionId(id);
         faccionRepository.deleteById(id);
     }
 }

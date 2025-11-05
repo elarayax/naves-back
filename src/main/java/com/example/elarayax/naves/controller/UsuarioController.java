@@ -59,8 +59,9 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario createdUsuario = usuarioService.updateUsuario(usuario);
-        return ResponseEntity.status(201).body(createdUsuario);
+        usuario.setId(null);
+        Usuario usuarioNew = usuarioService.save(usuario);
+        return ResponseEntity.status(201).body(usuarioNew);
     }
 
     @PutMapping("/{id}")
