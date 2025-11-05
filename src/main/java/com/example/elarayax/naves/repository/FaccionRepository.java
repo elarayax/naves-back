@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.elarayax.naves.model.Faccion;
 
 @Repository
-public interface FaccionRepository extends JpaRepository<Faccion, Long> {
+public interface FaccionRepository extends JpaRepository<Faccion, Integer> {
 
 }

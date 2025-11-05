@@ -30,6 +30,9 @@ public class Nave {
     @Column(name = "urlNave", nullable = false)
     private String url;
 
+    @Column(name = "descripcionNave", nullable = false)
+    private String descripcion;
+
     @ManyToOne
     @JoinColumn(name = "codigo_faccion")
     private Faccion faccion;
