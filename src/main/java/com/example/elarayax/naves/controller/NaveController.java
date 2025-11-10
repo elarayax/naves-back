@@ -74,13 +74,8 @@ public class NaveController {
         return ResponseEntity.noContent().build();  
     }
 
-    //métodod de health check para que render no se caiga
-    @RestController
-    @RequestMapping("/actuator")
-    public class HealthController {
-        @GetMapping("/health")
-        public ResponseEntity<String> health() {
-            return ResponseEntity.ok("OK");
-        }
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
     }
 }
