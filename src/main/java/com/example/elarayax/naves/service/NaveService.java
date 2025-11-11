@@ -72,4 +72,16 @@ public class NaveService {
             }
         }
     }
+
+    public List<Nave> findByFaccionId(Integer faccionId) {
+        return naveRepository.findByFaccionId(faccionId);
+    }
+
+    public List<Nave> findByUsuarioId(Integer usuarioId) {
+        return naveRepository.findByUsuarioId(usuarioId);
+    }
+
+    public List<Nave> findUltimas5ByFaccionId(Integer faccionId) {
+        return naveRepository.findTop5ByFaccionIdOrderByIdDesc(faccionId);
+    }
 }

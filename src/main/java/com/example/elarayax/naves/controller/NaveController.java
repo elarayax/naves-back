@@ -78,4 +78,25 @@ public class NaveController {
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("OK");
     }
+
+    @GetMapping("/faccion/{faccionId}")
+    public ResponseEntity<List<Nave>> getNavesPorFaccion(@PathVariable Integer faccionId) {
+        List<Nave> naves = naveService.findByFaccionId(faccionId);
+        return naves.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(naves);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Nave>> getNavesPorUsuario(@PathVariable Integer usuarioId) {
+        List<Nave> naves = naveService.findByUsuarioId(usuarioId);
+        return naves.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(naves);
+    }
+
+    @GetMapping("/faccion/{faccionId}/ultimas")
+    public ResponseEntity<List<Nave>> getUltimas5NavesPorFaccion(@PathVariable Integer faccionId) {
+        List<Nave> naves = naveService.findUltimas5ByFaccionId(faccionId);
+        if (naves.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(naves);
+    }
 }
